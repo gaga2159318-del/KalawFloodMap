@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flood Records - Oras, Eastern Samar</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #071624;
+        min-height: 100vh;
+        color: white;
+      }
+
+      .app-container {
+        min-height: 100vh;
+        background: #071624;
+      }
+
+      .header {
+        background: rgba(59, 130, 246, 0.1);
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        padding: 2rem 2rem 1.5rem;
+        position: relative;
+      }
+
+      .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      }
+
+      .header-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.025em;
+      }
+
+      .header-subtitle {
+        font-size: 1rem;
+        color: rgba(59, 130, 246, 0.8);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .header-subtitle::before {
+        content: '📊';
+        font-size: 1.2rem;
+      }
+
+      .back-button {
+        position: absolute;
+        top: 1.5rem;
+        right: 2rem;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .back-button:hover {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: rgba(59, 130, 246, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .content {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.1));
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        transform: translate(30px, -30px);
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-description {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .records-section {
+        background: rgba(59, 130, 246, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .section-title::before {
+        content: '📋';
+        font-size: 1.5rem;
+      }
+
+      .records-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .record-item {
+        background: rgba(59, 130, 246, 0.08);
+        border: 1px solid rgba(59, 130, 246, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.2s ease;
+      }
+
+      .record-item:hover {
+        background: rgba(59, 130, 246, 0.12);
+        border-color: rgba(59, 130, 246, 0.25);
+        transform: translateY(-2px);
+      }
+
+      .record-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+      }
+
+      .record-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.25rem;
+      }
+
+      .record-type {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 0.5rem;
+      }
+
+      .record-status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-confirmed {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      .status-disregarded {
+        background: rgba(245, 158, 11, 0.2);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+
+      .status-report {
+        background: rgba(59, 130, 246, 0.2);
+        color: #60a5fa;
+        border: 1px solid rgba(59, 130, 246, 0.35);
+      }
+
+      .record-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .detail-label {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
+
+      .detail-value {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+      }
+
+      .weather-info {
+        background: rgba(59, 130, 246, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.1);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1rem;
+      }
+
+      .weather-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .weather-title::before {
+        content: '🌦️';
+        font-size: 1rem;
+      }
+
+      .weather-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .no-records {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .no-records-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .no-records-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 0.5rem;
+      }
+
+      .no-records-text {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Light mode styles */
+      body.light-mode {
+        background: #f8fafc;
+        color: #1e293b;
+      }
+
+      .light-mode .app-container {
+        background: #f8fafc;
+      }
+
+      .light-mode .header {
+        background: rgba(59, 130, 246, 0.05);
+        border-bottom-color: rgba(148, 163, 184, 0.3);
+      }
+
+      .light-mode .header-title {
+        color: #1e293b;
+      }
+
+      .light-mode .header-subtitle {
+        color: #3b82f6;
+      }
+
+      .light-mode .back-button {
+        background: rgba(59, 130, 246, 0.1);
+        border-color: rgba(148, 163, 184, 0.3);
+        color: #1e293b;
+      }
+
+      .light-mode .back-button:hover {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: rgba(59, 130, 246, 0.4);
+      }
+
+      .light-mode .stat-card {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(29, 78, 216, 0.05));
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+
+      .light-mode .records-section {
+        background: rgba(59, 130, 246, 0.02);
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+
+      .light-mode .section-title {
+        color: #1e293b;
+      }
+
+      .light-mode .record-item {
+        background: rgba(59, 130, 246, 0.04);
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+
+      .light-mode .record-item:hover {
+        background: rgba(59, 130, 246, 0.08);
+        border-color: rgba(59, 130, 246, 0.3);
+      }
+
+      .light-mode .record-title {
+        color: #1e293b;
+      }
+
+      .light-mode .record-type {
+        color: #64748b;
+      }
+
+      .light-mode .detail-value {
+        color: #475569;
+      }
+
+      .light-mode .weather-info {
+        background: rgba(59, 130, 246, 0.03);
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+
+      .light-mode .weather-title {
+        color: #1e293b;
+      }
+
+      .light-mode .weather-details {
+        color: #64748b;
+      }
+
+      .light-mode .no-records {
+        color: #64748b;
+      }
+
+      .light-mode .no-records-title {
+        color: #1e293b;
+      }
+
+      .light-mode .no-records-text {
+        color: #64748b;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .header {
+          padding: 1.5rem 1rem 1rem;
+        }
+
+        .header-title {
+          font-size: 1.5rem;
+        }
+
+        .back-button {
+          position: static;
+          margin-top: 1rem;
+          align-self: flex-start;
+        }
+
+        .content {
+          padding: 1rem;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .stat-card {
+          padding: 1.5rem;
+        }
+
+        .records-section {
+          padding: 1.5rem;
+        }
+
+        .record-details {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="header">
+        <h1 class="header-title" id="pageTitle">Flood Records</h1>
+        <div class="header-subtitle">Detailed flood records for selected date</div>
+        <a href="index.html" class="back-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back to Map
+        </a>
+      </header>
+
+      <main class="content">
+        <div class="stats-grid" id="statsGrid">
+          <!-- Statistics will be populated by JavaScript -->
+        </div>
+
+        <section class="records-section">
+          <h2 class="section-title">Flood Event Submissions</h2>
+          <div class="records-grid" id="eventGrid">
+            <!-- User-submitted flood events will be populated by JavaScript -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Record Details Modal -->
+    <div id="recordModal" class="record-modal" style="display:none; position: fixed; inset: 0; background: rgba(7, 22, 36, 0.8); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center;">
+      <div class="record-modal-content" style="background: #071624; border: 1px solid rgba(35, 110, 178, 0.3); border-radius: 12px; width: min(800px, 92%); max-height: 85vh; overflow: auto; padding: 1.5rem; position: relative;">
+        <button id="recordModalClose" aria-label="Close" style="position:absolute; top:12px; right:12px; background: transparent; border: 1px solid rgba(148,163,184,0.3); color: rgba(255,255,255,0.8); width: 36px; height: 36px; border-radius: 8px; font-size: 20px; cursor: pointer;">&times;</button>
+        <h3 id="modalAreaName" style="margin:0 0 0.5rem 0; color: white; font-size: 1.25rem; font-weight: 700;"></h3>
+        <div id="modalStatus" class="record-status" style="display: inline-block; margin-bottom: 1rem;"></div>
+        <div class="record-details" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+          <div class="detail-item"><div class="detail-label">Timestamp</div><div class="detail-value" id="modalTimestamp"></div></div>
+          <div class="detail-item"><div class="detail-label">Context</div><div class="detail-value" id="modalContext"></div></div>
+          <div class="detail-item"><div class="detail-label">By</div><div class="detail-value" id="modalBy"></div></div>
+        </div>
+        <div id="modalWeather" class="weather-info" style="display:none;">
+          <div class="weather-title">Weather Conditions</div>
+          <div class="weather-details" id="modalWeatherDetails" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:0.75rem; font-size:0.8rem;"></div>
+        </div>
+        <div style="margin-top: 1rem;">
+          <button id="mediaDocsBtn" style="background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; padding: 0.5rem 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Media Documentation</button>
+        </div>
+        <div id="mediaDocsSection" style="display:none; margin-top: 1rem;">
+          <div id="mediaDocsContent" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      // Firebase SDK (module CDN imports)
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+      import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+      // Firebase configuration (same as app)
+      const firebaseConfig = {
+        apiKey: "AIzaSyAd5ezb6CHDXcmZVrpoTUbbJyxdnLaM9Jw",
+        authDomain: "floodmap-4f332.firebaseapp.com",
+        databaseURL: "https://floodmap-4f332-default-rtdb.firebaseio.com",
+        projectId: "floodmap-4f332",
+        storageBucket: "floodmap-4f332.appspot.com",
+        messagingSenderId: "1084370440686",
+        appId: "1:1084370440686:web:f7cb89d3cea6674284beff",
+        measurementId: "G-C01XXM1E9N"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // Module state
+      let currentRecords = [];
+      let selectedRecord = null;
+      let selectedRecordDate = '';
+      let selectedEvent = null;
+
+      // Fetch confirmed flood records (saved under /floodRecords) filtered by provided date string (e.g., "Sep 12, 2025")
+      async function fetchConfirmedFloodRecordsByDate(dateStr) {
+        try {
+          const snapshot = await get(ref(database, 'floodRecords'));
+          if (!snapshot.exists()) return [];
+          const obj = snapshot.val();
+          const allRecords = Object.keys(obj).map(k => obj[k]);
+
+          // Match the date format used when opening this page from the app
+          const toKey = (ts) => new Date(ts).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          });
+
+          // Records under /floodRecords are confirmed; disregard entries live under /disregardRecords
+          const sameDay = allRecords.filter(r => toKey(r.timestamp) === dateStr);
+          return sameDay;
+        } catch (err) {
+          console.error('Error fetching confirmed flood records from Firebase:', err);
+          return [];
+        }
+      }
+
+      // Fetch user-submitted flood events for same date/area to show media documentation (from /floodEvents)
+      async function fetchFloodEventsByDateAndArea(dateStr, areaId) {
+        try {
+          const snapshot = await get(ref(database, 'floodEvents'));
+          if (!snapshot.exists()) return [];
+          const obj = snapshot.val();
+          const allEvents = Object.keys(obj).map(k => obj[k]);
+  
+          const areaIdStr = String(areaId);
+          const sameDayEvents = allEvents.filter(ev => {
+            const ts = ev.timestamp || ev.submittedAt;
+            if (!ts) return false;
+            const evDateStr = new Date(ts).toLocaleDateString('en-US', {
+              year: 'numeric', month: 'short', day: 'numeric'
+            });
+            // Match by id or fallback to name match (in case of differing id types/sources)
+            const idMatch = String(ev.areaId) === areaIdStr;
+            const nameMatch = selectedRecord && ev.areaName && ev.areaName === selectedRecord.areaName;
+            return evDateStr === dateStr && (idMatch || nameMatch);
+          });
+  
+          return sameDayEvents;
+        } catch (err) {
+          console.error('Error fetching flood events for media docs:', err);
+          return [];
+        }
+      }
+      // Fetch all flood events for a given date (across areas)
+      async function fetchFloodEventsForDate(dateStr) {
+        try {
+          const snapshot = await get(ref(database, 'floodEvents'));
+          if (!snapshot.exists()) return [];
+          const obj = snapshot.val();
+          const allEvents = Object.keys(obj).map(k => obj[k]);
+          const sameDayEvents = allEvents.filter(ev => {
+            const ts = ev.timestamp || ev.submittedAt || ev.dateTime;
+            if (!ts) return false;
+            const evDateStr = new Date(ts).toLocaleDateString('en-US', {
+              year: 'numeric', month: 'short', day: 'numeric'
+            });
+            return evDateStr === dateStr;
+          });
+          return sameDayEvents;
+        } catch (err) {
+          console.error('Error fetching flood events for date:', err);
+          return [];
+        }
+      }
+
+      // Get URL parameters
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      }
+
+      // Load theme preference
+      function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-mode');
+        }
+      }
+
+      // Format date for display
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      // Load and display records (confirmed floods and user-submitted events) for the given date
+      async function loadRecords() {
+        const date = getUrlParameter('date');
+        const recordsParam = getUrlParameter('records');
+  
+        // If no date is provided, show empty state for records and stats (cannot load events without a date)
+        if (!date) {
+          document.getElementById('pageTitle').textContent = 'Flood Records';
+          displayStatistics(0, 0, 0);
+          const recordsGrid = document.getElementById('recordsGrid');
+          if (recordsGrid) {
+            recordsGrid.innerHTML = `
+              <div class="no-records">
+                <div class="no-records-icon">📊</div>
+                <div class="no-records-title">No Records Found</div>
+                <div class="no-records-text">No flood records are available for the selected date.</div>
+              </div>
+            `;
+          }
+          return;
+        }
+  
+        // Update page title
+        document.getElementById('pageTitle').textContent = `Flood Records - ${formatDate(date)}`;
+  
+        // Fetch confirmed flood records from Firebase (Realtime DB)
+        let records = await fetchConfirmedFloodRecordsByDate(date);
+  
+        // Fallback to records passed via URL (legacy support) if Firebase returned none
+        if ((!records || records.length === 0) && recordsParam) {
+          try {
+            records = JSON.parse(decodeURIComponent(recordsParam));
+          } catch (e) {
+            console.error('Error parsing records from URL:', e);
+          }
+        }
+  
+        // Calculate statistics from confirmed/disregarded records (may be 0)
+        const confirmedCount = (records || []).filter(r => !r.disregardedBy).length;
+        const disregardedCount = (records || []).filter(r => r.disregardedBy).length;
+        const totalRecords = (records || []).length;
+  
+        // Display statistics (always show, even when zero)
+        displayStatistics(confirmedCount, disregardedCount, totalRecords);
+  
+        // Display the records section; if empty, show a local "no records" message but do NOT return early
+        const recordsGrid = document.getElementById('recordsGrid');
+        currentRecords = records || [];
+        selectedRecordDate = date;
+        if (totalRecords > 0) {
+          displayRecords(records, date);
+          setupRecordClickHandlers();
+        } else if (recordsGrid) {
+          recordsGrid.innerHTML = `
+            <div class="no-records">
+              <div class="no-records-icon">📊</div>
+              <div class="no-records-title">No Records Found</div>
+              <div class="no-records-text">No flood records are available for the selected date.</div>
+            </div>
+          `;
+        }
+  
+        // Always load user-submitted flood events (community reports) for the same date
+        const events = await fetchFloodEventsForDate(date);
+        displayFloodEvents(events);
+        setupEventClickHandlers();
+      }
+
+      function displayStatistics(confirmed, disregarded, total) {
+        const statsGrid = document.getElementById('statsGrid');
+
+      }
+
+      // Minimal previews; click item to open full details in modal
+      function displayRecords(records, date) {
+        const recordsGrid = document.getElementById('recordsGrid');
+  
+        const html = records.map((record, idx) => {
+          const isConfirmed = !record.disregardedBy;
+          const actionText = isConfirmed ? 'Confirmed' : 'Disregarded';
+          const statusClass = isConfirmed ? 'status-confirmed' : 'status-disregarded';
+          const timeText = record.timestamp ? new Date(record.timestamp).toLocaleTimeString() : '';
+          const context = record.simulationContext || 'Real-time';
+  
+        return `
+            <div class="record-item" data-index="${idx}" style="cursor: pointer;">
+              <div class="record-header">
+                <div>
+                  <div class="record-title">${record.areaName || 'Unknown Area'}</div>
+                  <div class="record-type">Time: ${timeText} • ${context}</div>
+                </div>
+                <div class="record-status ${statusClass}">${actionText}</div>
+              </div>
+              <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Click to view details</div>
+            </div>
+          `;
+        }).join('');
+  
+        recordsGrid.innerHTML = html;
+      }
+
+      function setupRecordClickHandlers() {
+        const grid = document.getElementById('recordsGrid');
+        if (!grid) return;
+        grid.addEventListener('click', (e) => {
+          const target = e.target;
+          if (!target) return;
+          const item = target.closest('.record-item');
+          if (!item) return;
+          const idxStr = item.getAttribute('data-index') || '-1';
+          const idx = parseInt(idxStr, 10);
+          if (Number.isNaN(idx) || !currentRecords[idx]) return;
+          openRecordModal(currentRecords[idx]);
+        });
+      }
+
+      function openRecordModal(record) {
+        selectedRecord = record;
+        selectedRecordDate = new Date(record.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        const modal = document.getElementById('recordModal');
+        const modalAreaName = document.getElementById('modalAreaName');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalTimestamp = document.getElementById('modalTimestamp');
+        const modalContext = document.getElementById('modalContext');
+        const modalBy = document.getElementById('modalBy');
+        const modalWeather = document.getElementById('modalWeather');
+        const modalWeatherDetails = document.getElementById('modalWeatherDetails');
+        const mediaDocsSection = document.getElementById('mediaDocsSection');
+        const mediaDocsContent = document.getElementById('mediaDocsContent');
+  
+        // Fill header
+        modalAreaName.textContent = record.areaName || 'Unknown Area';
+        const isConfirmed = !record.disregardedBy;
+        modalStatus.className = `record-status ${isConfirmed ? 'status-confirmed' : 'status-disregarded'}`;
+        modalStatus.textContent = isConfirmed ? 'Confirmed' : 'Disregarded';
+  
+        // Details
+        modalTimestamp.textContent = record.timestamp ? new Date(record.timestamp).toLocaleString() : 'N/A';
+        modalContext.textContent = record.simulationContext || 'Real-time';
+        modalBy.textContent = record.confirmedBy || record.disregardedBy || 'System';
+  
+        // Weather
+        if (record.weatherConditions) {
+          modalWeather.style.display = 'block';
+          const w = record.weatherConditions;
+          modalWeatherDetails.innerHTML = `
+            <div>Temperature: ${w.temperature}°C</div>
+            <div>Description: ${w.description}</div>
+            ${w.precipitation > 0 ? `<div>Rainfall: ${w.precipitation}mm</div>` : ''}
+            ${w.windSpeed ? `<div>Wind: ${w.windSpeed} m/s</div>` : ''}
+          `;
+        } else {
+          modalWeather.style.display = 'none';
+          modalWeatherDetails.innerHTML = '';
+        }
+  
+        // Reset media docs
+        mediaDocsSection.style.display = 'none';
+        mediaDocsContent.innerHTML = '';
+  
+        // Show modal
+        modal.style.display = 'flex';
+      }
+
+      // Render flood events list (user submissions)
+      function displayFloodEvents(events) {
+        const eventGrid = document.getElementById('eventGrid');
+        if (!eventGrid) return;
+        if (!events || events.length === 0) {
+          eventGrid.innerHTML = `
+            <div class="no-records">
+              <div class="no-records-icon">📝</div>
+              <div class="no-records-title">No Flood Event Submissions</div>
+              <div class="no-records-text">No community reports are available for the selected date.</div>
+            </div>
+          `;
+          return;
+        }
+        const html = events.map((ev, idx) => {
+          const ts = ev.dateTime || ev.timestamp || ev.submittedAt;
+          const timeText = ts ? new Date(ts).toLocaleTimeString() : '';
+          const reporter = ev.reporterName ? ` • by ${ev.reporterName}` : '';
+          return `
+            <div class="record-item event-item" data-ev-index="${idx}" style="cursor:pointer;">
+              <div class="record-header">
+                <div>
+                  <div class="record-title">${ev.areaName || 'Unknown Area'}</div>
+                  <div class="record-type">Time: ${timeText}${reporter}</div>
+                </div>
+                <div class="record-status status-report">Report</div>
+              </div>
+              <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Click to view report details</div>
+            </div>
+          `;
+        }).join('');
+        eventGrid.innerHTML = html;
+        // keep a copy of events on the grid element for retrieval
+        (eventGrid)._eventsForDate = events;
+      }
+  
+      function setupEventClickHandlers() {
+        const eventGrid = document.getElementById('eventGrid');
+        if (!eventGrid) return;
+        eventGrid.addEventListener('click', (e) => {
+          const target = e.target;
+          if (!target) return;
+          const card = target.closest('.event-item');
+          if (!card) return;
+          const idxStr = card.getAttribute('data-ev-index') || '-1';
+          const idx = parseInt(idxStr, 10);
+          const events = (eventGrid)._eventsForDate || [];
+          if (Number.isNaN(idx) || !events[idx]) return;
+          openEventModal(events[idx]);
+        });
+      }
+  
+      function openEventModal(ev) {
+        selectedEvent = ev;
+        selectedRecord = null;
+        const modal = document.getElementById('recordModal');
+        const modalAreaName = document.getElementById('modalAreaName');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalTimestamp = document.getElementById('modalTimestamp');
+        const modalContext = document.getElementById('modalContext');
+        const modalBy = document.getElementById('modalBy');
+        const modalWeather = document.getElementById('modalWeather');
+        const modalWeatherDetails = document.getElementById('modalWeatherDetails');
+        const mediaDocsSection = document.getElementById('mediaDocsSection');
+        const mediaDocsContent = document.getElementById('mediaDocsContent');
+  
+        // Header and status
+        modalAreaName.textContent = ev.areaName || 'Unknown Area';
+        modalStatus.className = `record-status status-report`;
+        modalStatus.textContent = 'Report';
+  
+        // Meta
+        const ts = ev.dateTime || ev.timestamp || ev.submittedAt;
+        modalTimestamp.textContent = ts ? new Date(ts).toLocaleString() : 'N/A';
+        modalContext.textContent = ev.warningsIssued ? `Warnings: ${ev.warningsIssued}` : 'User Report';
+        const byParts = [];
+        if (ev.reporterName) byParts.push(ev.reporterName);
+        if (ev.reporterOrganization) byParts.push(ev.reporterOrganization);
+        modalBy.textContent = byParts.length ? byParts.join(' • ') : 'Anonymous';
+  
+        // Weather-like details (map form fields if present)
+        const details = [];
+        if (ev.waterLevel) details.push(`Water Level: ${ev.waterLevel}`);
+        if (ev.rainfallAmount) details.push(`Rainfall: ${ev.rainfallAmount}`);
+        if (ev.duration) details.push(`Duration: ${ev.duration}`);
+        if (ev.weatherConditions) details.push(`Conditions: ${ev.weatherConditions}`);
+        if (ev.floodExtent) details.push(`Extent: ${ev.floodExtent}`);
+        if (ev.floodImpact) details.push(`Impact: ${ev.floodImpact}`);
+  
+        if (details.length) {
+          modalWeather.style.display = 'block';
+          modalWeatherDetails.innerHTML = details.map(d => `<div>${d}</div>`).join('');
+        } else {
+          modalWeather.style.display = 'none';
+          modalWeatherDetails.innerHTML = '';
+        }
+  
+        // Reset media docs region; clicking the Media Documentation button will render ev.photoURLs
+        mediaDocsSection.style.display = 'none';
+        mediaDocsContent.innerHTML = '';
+        modal.style.display = 'flex';
+      }
+  
+      function showNoRecords() {
+        const recordsGrid = document.getElementById('recordsGrid');
+        const statsGrid = document.getElementById('statsGrid');
+  
+        statsGrid.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">Total Records</div>
+            <div class="stat-value">0</div>
+            <div class="stat-description">No flood records found</div>
+          </div>
+        `;
+  
+        recordsGrid.innerHTML = `
+          <div class="no-records">
+            <div class="no-records-icon">📊</div>
+            <div class="no-records-title">No Records Found</div>
+            <div class="no-records-text">No flood records are available for the selected date.</div>
+          </div>
+        `;
+      }
+
+      // Initialize page
+     document.addEventListener('DOMContentLoaded', function() {
+       loadTheme();
+       loadRecords();
+ 
+       // Modal close
+       const recordModal = document.getElementById('recordModal');
+       const recordModalClose = document.getElementById('recordModalClose');
+       if (recordModalClose) {
+         recordModalClose.addEventListener('click', () => {
+           recordModal.style.display = 'none';
+         });
+       }
+       // Click backdrop to close
+       if (recordModal) {
+         recordModal.addEventListener('click', (e) => {
+           if (e.target === recordModal) {
+             recordModal.style.display = 'none';
+           }
+         });
+       }
+ 
+       // Media Documentation button
+       const mediaDocsBtn = document.getElementById('mediaDocsBtn');
+       const mediaDocsSection = document.getElementById('mediaDocsSection');
+       const mediaDocsContent = document.getElementById('mediaDocsContent');
+       if (mediaDocsBtn) {
+         mediaDocsBtn.addEventListener('click', async () => {
+           mediaDocsContent.innerHTML = '<div style="color: rgba(255,255,255,0.7);">Loading media...</div>';
+           mediaDocsSection.style.display = 'block';
+           try {
+             let photos = [];
+             if (selectedEvent && Array.isArray(selectedEvent.photoURLs)) {
+               photos = selectedEvent.photoURLs.filter(Boolean);
+             } else if (selectedRecord) {
+               const events = await fetchFloodEventsByDateAndArea(selectedRecordDate, selectedRecord.areaId);
+               photos = events.flatMap(ev => Array.isArray(ev.photoURLs) ? ev.photoURLs : []).filter(Boolean);
+             }
+ 
+             if (photos.length === 0) {
+               mediaDocsContent.innerHTML = '<div style="color: rgba(255,255,255,0.6);">No media documentation available.</div>';
+             } else {
+               mediaDocsContent.innerHTML = photos.map(url => `
+                 <div style="background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; overflow: hidden;">
+                   <img src="${url}" alt="Flood photo" style="width: 100%; height: 120px; object-fit: cover;" />
+                 </div>
+               `).join('');
+             }
+           } catch (err) {
+             console.error('Error loading media docs:', err);
+             mediaDocsContent.innerHTML = '<div style="color:#f87171;">Failed to load media documentation.</div>';
+           }
+         });
+       }
+     });
+    </script>
+  </body>
+</html>

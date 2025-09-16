@@ -1,0 +1,131 @@
+.flood-event-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(7, 22, 36, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.flood-event-form-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.flood-event-form-modal .modal-content {
+  background: #0c1a2e;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(35, 110, 178, 0.3);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.flood-event-form-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.flood-event-form-modal .modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.flood-event-form-modal .close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.flood-event-form-modal .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.flood-event-form-modal .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.flood-event-form-modal .form-group.full-width {
+  grid-column: span 2;
+}
+
+.flood-event-form-modal label {
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.flood-event-form-modal input,
+.flood-event-form-modal textarea,
+.flood-event-form-modal select {
+  background: #071624;
+  border: 1px solid rgba(35, 110, 178, 0.3);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.flood-event-form-modal .photo-upload-area {
+  border: 2px dashed rgba(35, 110, 178, 0.5);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.flood-event-form-modal .photo-preview {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.flood-event-form-modal .photo-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.flood-event-form-modal .modal-footer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.flood-event-form-modal .submit-button,
+.flood-event-form-modal .cancel-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.flood-event-form-modal .submit-button {
+  background: #236eb2;
+  color: white;
+}
+
+.flood-event-form-modal .cancel-button {
+  background: #374151;
+  color: white;
+}
